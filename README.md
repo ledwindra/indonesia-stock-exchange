@@ -22,7 +22,7 @@ TL;DR: if you don't want to run this locally and just want to go straight to the
 |trading-summary-${YEAR}.csv|Daily trading summary since January 2, 2015 (prior that the data is unavailable)|
 
 # Plot Examples
-Below are plot examples, which are automatically updated daily at 12 AM UTC.
+Below are plot examples, which are automatically updated daily at 12 AM UTC+7 (Jakarta time).
 
 #### 1. Bar
 - ##### Today
