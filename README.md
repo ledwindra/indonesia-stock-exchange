@@ -33,7 +33,11 @@ TL;DR: if you don't want to run this locally and just want to go straight to the
 ![histogram](./img/histogram.png)
 
 #### 4. Trend lines
-![trend-line.png](./img/trend-line.png)
+- ##### Highest YTD
+![trend-line-ascending-False](./img/trend-line-ascending-False.png)
+
+- ##### Lowest YTD
+![trend-line-ascending-True](./img/trend-line-ascending-True.png)
 
 # Permission
 How can we be sure that it's totally okay to get the data from the website? Open [<strong>`its robots.txt site`</strong>](https://idx.co.id/robots.txt) and see the following result:
