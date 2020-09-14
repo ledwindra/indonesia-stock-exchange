@@ -21,6 +21,20 @@ TL;DR: if you don't want to run this locally and just want to go straight to the
 |[sekretaris.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/sekretaris.csv)|A list of secretaries for each listed companies|
 |trading-summary-${YEAR}.csv|Daily trading summary since January 2, 2015 (prior that the data is unavailable)|
 
+# Plot Example
+
+#### 1. Bar
+![bar](./img/bar.png)
+
+#### 2. Density
+![density](./img/density.png)
+
+#### 3. Histogram
+![histogram](./img/histogram.png)
+
+#### 4. Trend lines
+![trend-line.png](./img/trend-line.png)
+
 # Permission
 How can we be sure that it's totally okay to get the data from the website? Open [<strong>`its robots.txt site`</strong>](https://idx.co.id/robots.txt) and see the following result:
 
