@@ -39,6 +39,9 @@ TL;DR: if you don't want to run this locally and just want to go straight to the
 - ##### Lowest YTD
 ![trend-line-ascending-True](./img/trend-line-ascending-True.png)
 
+#### 5. Correlation matrix
+![correlation](./img/correlation.png)
+
 # Permission
 How can we be sure that it's totally okay to get the data from the website? Open [<strong>`its robots.txt site`</strong>](https://idx.co.id/robots.txt) and see the following result:
 

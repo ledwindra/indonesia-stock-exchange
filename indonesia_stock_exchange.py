@@ -53,6 +53,7 @@ def trend(df, title, min_date='2015-01-01', max_date=date.today().strftime('%Y-%
     plt.title(title, fontsize=20)
     plt.xlabel('Period', fontsize=12)
     plt.ylabel('Price per Share', fontsize=12)
+    
     return plt.savefig(f'img/trend-line-ascending-{ascending}.png', bbox_inches = 'tight')
     
     
@@ -67,11 +68,13 @@ def density(df, number_ticker):
     plt.title(f'Distributions of percentage changes of {number_ticker} companies', fontsize=20)
     plt.xlabel('Percentage changes', fontsize=12)
     plt.ylabel('Density', fontsize=12)
+    
     return plt.savefig(f'img/density.png', bbox_inches = 'tight')
     
 
 def histogram():
     get_ytd(dataframe()).ytd.plot(kind='hist', bins=100, figsize=(25, 10), title='Distributions of Year to Date Values', color='gray')
+    
     return plt.savefig(f'img/histogram.png', bbox_inches = 'tight')
 
 def bar(df):
@@ -89,7 +92,20 @@ def bar(df):
         legend=False,
         title='Companies with Lowest and Highest Year to Date Values'
     )
+    
     return plt.savefig(f'img/bar.png', bbox_inches = 'tight')
+
+def correlation(df):
+    df = df.select_dtypes(include=['float64'])
+    f = plt.figure(figsize=(25, 10))
+    plt.matshow(df.corr(), fignum=f.number)
+    plt.xticks(range(df.shape[1]), df.columns, fontsize=12, rotation=90)
+    plt.yticks(range(df.shape[1]), df.columns, fontsize=12)
+    cb = plt.colorbar()
+    cb.ax.tick_params(labelsize=14)
+    plt.title('Correlation Matrix', fontsize=16)
+    
+    return plt.savefig(f'img/correlation.png', bbox_inches = 'tight')
     
 if __name__ == '__main__':
     histogram()
@@ -97,3 +113,4 @@ if __name__ == '__main__':
     trend(dataframe(), 'Trends of Stock Prices with Lowest YTD', min_date='2020-01-01', ascending=True)
     density(dataframe(), 5)
     bar(dataframe())
+    correlation(dataframe())
