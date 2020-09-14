@@ -1,3 +1,5 @@
+![CodeQL](https://github.com/ledwindra/indonesia-stock-exchange/workflows/CodeQL/badge.svg)
+
 # About
 
 This repository aims to get the financial data of publicly listed companies in Indonesia 🇮🇩 for free. It includes reference data (e.g. company profiles, organization structures, etc), daily trading summary (e.g. high, low, bid, ask, foreign buy/sell, etc), and financial statements (balance sheet, profit/loss, and cash flow). This repository is automatically updated daily so you can just chill and relax 😎 🏖 🥥 🌴 🍻.
