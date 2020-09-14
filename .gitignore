@@ -2,5 +2,6 @@ __pycache__/
 .vscode/
 .ipynb_checkpoints/
 .venv-indonesia-stock-exchange/
+pythonenv3.8/
 *.ipynb
 *.xlsx

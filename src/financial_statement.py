@@ -39,20 +39,22 @@ class FinancialStatement:
             return None
         
     def dataframe(self, ticker, year, audit, quarter, column, sheet):
-        df = pd.read_excel(f'./tmp/{ticker}{year}{audit}{quarter}.xlsx', sheet)
-        df = df[column]
-        df = df.transpose()
-        columns = [str(x).replace(' ', '_').lower() for x in df.iloc[0].to_list()]
-        df.columns = [x for x in columns]
-        df = df.drop(columns=['nan'])
-        df = df.iloc[1:]
-        df = df.reset_index(drop=True)
-        df['ticker'] = ticker
-        ticker = df.pop('ticker')
-        df.insert(0, 'ticker', ticker)
-        df = df.loc[:,~df.columns.duplicated()]
-
-        return df
+        try:
+            df = pd.read_excel(f'./tmp/{ticker}{year}{audit}{quarter}.xlsx', sheet)
+            df = df[column]
+            df = df.transpose()
+            columns = [str(x).replace(' ', '_').lower() for x in df.iloc[0].to_list()]
+            df.columns = [x for x in columns]
+            df = df.drop(columns=['nan'])
+            df = df.iloc[1:]
+            df = df.reset_index(drop=True)
+            df['ticker'] = ticker
+            ticker = df.pop('ticker')
+            df.insert(0, 'ticker', ticker)
+            df = df.loc[:,~df.columns.duplicated()]
+            return df
+        except Exception:
+            pass
 
     def concatenate(self, listed_company, year, audit, quarter, column, sheet):
         data = []
