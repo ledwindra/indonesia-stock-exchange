@@ -26,12 +26,19 @@ def get_close(df, year, date_col, close_col, is_min=True):
     return df
 
 def get_ytd(df):
-    min_date = get_close(df, 2020, 'DateMin', 'CloseMin')
-    max_date = get_close(df, 2020, 'DateMax', 'CloseMax', is_min=False)
+    year = date.today().year
+    min_date = get_close(df, year, 'DateMin', 'CloseMin')
+    max_date = get_close(df, year, 'DateMax', 'CloseMax', is_min=False)
     ytd = pd.merge(min_date, max_date, how='inner', on='StockCode')
     ytd['ytd'] = (ytd.CloseMax - ytd.CloseMin) / ytd.CloseMin
     
     return ytd
+
+def get_today(df):
+    today = df[df['Date'] == max(df.Date)][['StockCode', 'Previous', 'Close']]
+    today['percent_change'] = (today.Close - today.Previous) / today.Previous
+    
+    return today
 
 def trend(df, title, min_date='2015-01-01', max_date=date.today().strftime('%Y-%m-%d'), ascending=False):
     # get ticker list
@@ -73,27 +80,37 @@ def density(df, number_ticker):
     
 
 def histogram():
-    get_ytd(dataframe()).ytd.plot(kind='hist', bins=100, figsize=(25, 10), title='Distributions of Year to Date Values', color='gray')
+    get_ytd(dataframe()).ytd.plot(
+        kind='hist',
+        bins=100,
+        figsize=(25, 10),
+        title='Distributions of Year to Date Values',
+        color='gray',
+        ec='k'
+    )
     
     return plt.savefig(f'img/histogram.png', bbox_inches = 'tight')
 
-def bar(df):
-    ytd = get_ytd(df)
-    func_ytd = lambda df, asc: df.sort_values(by='ytd', ascending=asc)[:5]
-    ytd = pd.concat([func_ytd(ytd, True), func_ytd(ytd, False)])
-    ytd = ytd.sort_values(by='ytd', ascending=True)
-    ytd = ytd[['StockCode', 'ytd']]
-    ytd['positive'] = ytd.ytd > 0
-    ytd.plot(
+def bar(df, column, title, file_name):
+    func = lambda df, asc: df.sort_values(by=column, ascending=asc)[:5]
+    df = pd.concat([func(df, True), func(df, False)])
+    df = df.sort_values(by=column, ascending=True)
+    df = df[['StockCode', column]]
+    df['positive'] = df[column] > 0
+    df.plot(
         x='StockCode',
-        y='ytd', kind='bar',
-        color=ytd.positive.map({True: 'g', False: 'r'}),
+        y=column,
+        kind='bar',
+        color=df.positive.map({True: 'g', False: 'r'}),
         figsize=(25, 10),
-        legend=False,
-        title='Companies with Lowest and Highest Year to Date Values'
+        legend=False
     )
+    plt.xlabel('Ticker', fontsize=16)
+    plt.ylabel('Price change (%)', fontsize=16)
+    plt.tick_params(axis='both', which='major', labelsize=14)
+    plt.title(title, fontsize=24)
     
-    return plt.savefig(f'img/bar.png', bbox_inches = 'tight')
+    return plt.savefig(f'img/{file_name}.png', bbox_inches = 'tight')
 
 def correlation(df):
     df = df.select_dtypes(include=['float64'])
@@ -112,5 +129,16 @@ if __name__ == '__main__':
     trend(dataframe(), 'Trends of Stock Prices with Highest YTD', min_date='2020-01-01', ascending=False)
     trend(dataframe(), 'Trends of Stock Prices with Lowest YTD', min_date='2020-01-01', ascending=True)
     density(dataframe(), 5)
-    bar(dataframe())
+    bar(
+        get_ytd(dataframe()),
+        'ytd',
+        f'List of Companies with Lowest and Highest Year-to-Date Percentage Changes',
+        'bar-ytd'
+    )
+    bar(
+        get_today(dataframe()),
+        'percent_change',
+        f'List of Companies with Lowest and Highest Percentage Changes as of {date.today().strftime("%Y-%m-%d")}',
+        'bar-today'
+    )
     correlation(dataframe())

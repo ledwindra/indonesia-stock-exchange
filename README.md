@@ -21,10 +21,15 @@ TL;DR: if you don't want to run this locally and just want to go straight to the
 |[sekretaris.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/sekretaris.csv)|A list of secretaries for each listed companies|
 |trading-summary-${YEAR}.csv|Daily trading summary since January 2, 2015 (prior that the data is unavailable)|
 
-# Plot Example
+# Plot Examples
+Below are plot examples, which are automatically updated daily at 12 AM UTC.
 
 #### 1. Bar
-![bar](./img/bar.png)
+- ##### Today
+![bar-today](./img/bar-today.png)
+
+- ##### Year to Date
+![bar-ytd](./img/bar-ytd.png)
 
 #### 2. Density
 ![density](./img/density.png)
