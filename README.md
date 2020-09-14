@@ -19,7 +19,7 @@ TL;DR: if you don't want to run this locally and just want to go straight to the
 |[pemegangsaham.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/pemegangsaham.csv)|A list of shareholders for each listed company|
 |[profiles.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/profiles.csv)|Company profiles|
 |[sekretaris.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/sekretaris.csv)|A list of secretaries for each listed companies|
-|[trading-summary.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/trading-summary.csv)|Daily trading summary since January 2, 2015 (prior that the data is unavailable)|
+|trading-summary-${YEAR}.csv|Daily trading summary since January 2, 2015 (prior that the data is unavailable)|
 
 # Permission
 How can we be sure that it's totally okay to get the data from the website? Open [<strong>`its robots.txt site`</strong>](https://idx.co.id/robots.txt) and see the following result:
