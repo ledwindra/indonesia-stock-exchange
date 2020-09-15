@@ -56,7 +56,7 @@ if __name__ == "__main__":
         '-s',
         '--summary',
         type=str,
-        choices=['GetStockSummary', 'GetIndexSummary'],
+        choices=['GetBrokerSummary', 'GetIndexSummary', 'GetStockSummary'],
         help='Which summary that will be scraped.',
         metavar=''
     )
@@ -64,7 +64,7 @@ if __name__ == "__main__":
         '-f',
         '--file_name',
         type=str,
-        choices=['stock-summary', 'index-summary'],
+        choices=['broker-summary', 'index-summary', 'stock-summary'],
         help='File name which corresponds to information that will be obtaind.',
         metavar=''
     )
