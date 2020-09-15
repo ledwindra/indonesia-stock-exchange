@@ -34,5 +34,5 @@ jobs:
         git remote set-url origin https://${USER_NAME}:${ACCESS_TOKEN}@github.com/${USER_NAME}/indonesia-stock-exchange.git
         git pull origin main
         git add -A
-        git diff-index --quiet HEAD || git commit -m "Update trade summary data"
+        git diff-index --quiet HEAD || git commit -m "Update stock summary data"
         git push origin main
