@@ -75,7 +75,7 @@ class FinancialStatement:
 def main():
     fs = FinancialStatement()
     listed_company = fs.listed_company()['KodeEmiten']
-    download = [fs.download(ticker, fs.year, fs.audit, fs.quarter) for ticker in listed_company]
+    [fs.download(ticker, fs.year, fs.audit, fs.quarter) for ticker in listed_company]
     # concatenate each section in the financial statements
     general_info = fs.concatenate(listed_company, fs.year, fs.audit, fs.quarter, ['Unnamed: 2', 'Unnamed: 1'], 1)
     balance_sheet = fs.concatenate(listed_company, fs.year, fs.audit, fs.quarter, ['Unnamed: 3', 'Unnamed: 1'], 2)
@@ -84,7 +84,8 @@ def main():
     # merge dataframes and save to csv based on period
     merge_multiple = lambda left, right: pd.merge(left, right, how='inner', on='ticker')
     df = reduce(merge_multiple, [general_info, balance_sheet, profit_loss, cash_flow])
-    df.to_csv(f'./data/financial_statement{fs.year + fs.audit + fs.quarter}.csv', index=False)
+    pattern = 'data/financial-statement/financial-statement'
+    df.to_csv(f'{pattern}{fs.year + fs.audit + fs.quarter}.csv', index=False)
     
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
