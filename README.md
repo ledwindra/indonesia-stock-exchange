@@ -10,6 +10,7 @@ TL;DR: if you don't want to run this locally and just want to go straight to the
 |-|-|
 |[anakperusahaan.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/anakperusahaan.csv)|A list of subsidiaries for each listed company|
 |[bondsandsukuk.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/bondsandsukuk.csv)|A list of bonds for each listed company|
+|broker-summary-${YEAR}.csv|Daily broker summary since January 4, 2016 (prior that the data is unavailable)|
 |[direktur.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/direktur.csv)|A list of directors for each listed company|
 |[dividen.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/dividen.csv)|Dividends information for each listed company|
 |financial-statement${YEAR}${QUARTER}.csv|Quarterly financial statement which comprises of balance sheet, profit and loss, and cash flow statements.|
