@@ -2,8 +2,13 @@ name: cron-stock-summary
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron: "0 17 * * *"
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+      tags:
+        description: 'Manual trigger'
 
 jobs:
   job_id:
