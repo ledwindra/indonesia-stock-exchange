@@ -69,7 +69,6 @@ def main(ticker):
     year, audit, quarter = fs.year, fs.audit, fs.quarter
     file_name = f'data/financial-statement/{ticker}-{fs.year}-{fs.quarter}.json'
     if not os.path.exists(file_name):
-        print(file_name)
         fs.download(ticker, year, audit, quarter)
         data = fs.merge(ticker, fs.year, fs.audit, fs.quarter)
         try:

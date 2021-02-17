@@ -6,4 +6,3 @@ pythonenv3.8/
 *.ipynb
 *.xlsx
 util/
-analysis/
