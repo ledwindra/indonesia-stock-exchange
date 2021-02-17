@@ -2,26 +2,21 @@ import argparse
 import os
 import pandas as pd
 import requests
-import xlrd
+from datetime import date
 from functools import reduce
+from multiprocessing import Pool, cpu_count
 
 class FinancialStatement:
-    
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-y', '--year', type=str, default=date.today().year - 1, help='Financial statement year. Default: last year.', metavar='')
+    parser.add_argument('-a', '--audit', type=str, choices=['TW1', 'TW2', 'TW3', 'Audit'], default='Audit', help='''An indication whether it\'s an audited financial statement or not. Q1, ..., Q3 should be put as TW1, ..., TW3, and Q4 should be Audit.''', metavar='')
+    parser.add_argument('-q', '--quarter', type=str, choices=['I', 'II', 'III', 'Tahunan'], default='Tahunan', help='''Financial statement quarter. Q1, ..., Q3 should be put as I, ..., III, and Q4 should be Tahunan.''', metavar='')
+    args = parser.parse_args()
+
     def __init__(self):
-        self.year = args.year
-        self.audit = args.audit
-        self.quarter = args.quarter
-    
-    def listed_company(self):
-        url = 'https://www.idx.co.id/umbraco/Surface/Helper/GetEmiten?emitenType=s'
-        status_code = None
-        while status_code != 200:
-            response = requests.get(url)
-            status_code = response.status_code
-            data = response.json()
-            df = pd.DataFrame(data)
-        
-        return df
+        self.year = self.args.year
+        self.audit = self.args.audit
+        self.quarter = self.args.quarter
         
     def download(self, ticker, year, audit, quarter):
         url = f'http://www.idx.co.id/Portals/0/StaticData/ListedCompanies/Corporate_Actions/New_Info_JSX/Jenis_Informasi/01_Laporan_Keuangan/02_Soft_Copy_Laporan_Keuangan//Laporan%20Keuangan%20Tahun%20{year}/{audit}/{ticker}/FinancialStatement-{year}-{quarter}-{ticker}.xlsx'
@@ -56,64 +51,39 @@ class FinancialStatement:
         except Exception:
             pass
 
-    def concatenate(self, listed_company, year, audit, quarter, column, sheet):
-        data = []
-        for ticker in listed_company:
-            try:
-                data.append(self.dataframe(ticker, year, audit, quarter, column, sheet))
-            except FileNotFoundError:
-                pass
-            except xlrd.XLRDError:
-                pass
-
-        df = pd.concat(data, axis='columns')
-        df = pd.concat(data, sort=False)
-        df = df.reset_index(drop=True)
-
-        return df
+    def merge(self, ticker, year, audit, quarter):
+        year, audit, quarter = self.year, self.audit, self.quarter
+        general_info = self.dataframe(ticker, year, audit, quarter, ['Unnamed: 2', 'Unnamed: 1'], 1)
+        balance_sheet = self.dataframe(ticker, year, audit, quarter, ['Unnamed: 3', 'Unnamed: 1'], 2)
+        profit_loss = self.dataframe(ticker, year, audit, quarter, ['Unnamed: 3', 'Unnamed: 1'], 3)
+        cash_flow = self.dataframe(ticker, year, audit, quarter, ['Unnamed: 3', 'Unnamed: 1'], 6)
+        merge_multiple = lambda left, right: pd.merge(left, right, how='inner', on='ticker')
         
-def main():
+        try:
+            return reduce(merge_multiple, [general_info, balance_sheet, profit_loss, cash_flow])
+        except TypeError:
+            pass
+        
+def main(ticker):
     fs = FinancialStatement()
-    listed_company = fs.listed_company()['KodeEmiten']
-    [fs.download(ticker, fs.year, fs.audit, fs.quarter) for ticker in listed_company]
-    # concatenate each section in the financial statements
-    general_info = fs.concatenate(listed_company, fs.year, fs.audit, fs.quarter, ['Unnamed: 2', 'Unnamed: 1'], 1)
-    balance_sheet = fs.concatenate(listed_company, fs.year, fs.audit, fs.quarter, ['Unnamed: 3', 'Unnamed: 1'], 2)
-    profit_loss = fs.concatenate(listed_company, fs.year, fs.audit, fs.quarter, ['Unnamed: 3', 'Unnamed: 1'], 3)
-    cash_flow = fs.concatenate(listed_company, fs.year, fs.audit, fs.quarter, ['Unnamed: 3', 'Unnamed: 1'], 6)
-    # merge dataframes and save to csv based on period
-    merge_multiple = lambda left, right: pd.merge(left, right, how='inner', on='ticker')
-    df = reduce(merge_multiple, [general_info, balance_sheet, profit_loss, cash_flow])
-    pattern = 'data/financial-statement/financial-statement'
-    df.to_csv(f'{pattern}{fs.year + fs.audit + fs.quarter}.csv', index=False)
+    year, audit, quarter = fs.year, fs.audit, fs.quarter
+    file_name = f'data/financial-statement/{ticker}-{fs.year}-{fs.quarter}.json'
+    if not os.path.exists(file_name):
+        print(file_name)
+        fs.download(ticker, year, audit, quarter)
+        data = fs.merge(ticker, fs.year, fs.audit, fs.quarter)
+        try:
+            data.to_json(file_name, orient='records', indent=4)
+        except AttributeError:
+            pass
     
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '-y',
-        '--year',
-        type=str,
-        help='Financial statement year',
-        metavar=''
-    )
-    parser.add_argument(
-        '-a',
-        '--audit',
-        type=str,
-        help='''
-        An indication whether it\'s an audited financial statement or not.
-        Q1, ..., Q3 should be put as TW1, ..., TW3, and Q4 should be Audit.
-        ''',
-        metavar=''
-    )
-    parser.add_argument(
-        '-q',
-        '--quarter',
-        type=str,
-        help='''
-        Financial statement quarter. Q1, ..., Q3 should be put as I,
-        ..., III, and Q4 should be Tahunan.''',
-        metavar=''
-    )
-    args = parser.parse_args()
-    main()
+    url = 'https://www.idx.co.id/umbraco/Surface/Helper/GetEmiten?emitenType=s'
+    status_code = None
+    while status_code != 200:
+        response = requests.get(url)
+        status_code = response.status_code
+        data = response.json()
+    listed_company = [x['KodeEmiten'] for x in data]
+    with Pool(cpu_count()) as p:
+        p.map(main, listed_company)

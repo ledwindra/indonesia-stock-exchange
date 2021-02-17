@@ -7,23 +7,7 @@ This repository aims to get the financial data of publicly listed companies in I
 TL;DR: if you don't want to run this locally and just want to go straight to the data, which are located under `data` directory. You can proceed as follows:
 
 |file_name|description|
-|-|-|
-|[anakperusahaan.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/anakperusahaan.csv)|A list of subsidiaries for each listed company|
-|[bondsandsukuk.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/bondsandsukuk.csv)|A list of bonds for each listed company|
-|broker-summary-${YEAR}.csv|Daily broker summary since January 4, 2016 (prior that the data is unavailable)|
-|[direktur.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/direktur.csv)|A list of directors for each listed company|
-|[dividen.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/dividen.csv)|Dividends information for each listed company|
-|financial-statement${YEAR}${QUARTER}.csv|Quarterly financial statement which comprises of balance sheet, profit and loss, and cash flow statements.|
-|index-summary-${YEAR}.csv|Daily trading summary for each industry since January 2, 2015 (prior that the data is unavailable)|
-|[issuedbond.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/issuedbond.csv)|Issued bonds for each listed company|
-|[kap.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/kap.csv)|A list of auditors for each listed company|
-|[komisaris.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/komisaris.csv)|A list of commissioners for each listed company|
-|[komiteaudit.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/komiteaudit.csv)|A list of audit committees for each listed company|
-|[listed-company.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/listed-company.csv)|Publicly listed companies in Indonesia Stock Exchange|
-|[pemegangsaham.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/pemegangsaham.csv)|A list of shareholders for each listed company|
-|[profiles.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/profiles.csv)|Company profiles|
-|[sekretaris.csv](https://raw.githubusercontent.com/ledwindra/indonesia-stock-exchange/main/data/sekretaris.csv)|A list of secretaries for each listed companies|
-|stock-summary-${YEAR}.csv|Daily trading summary for individual stocks since January 2, 2015 (prior that the data is unavailable)|
+NEED TO BE UPDATED.
 
 # Plot Examples
 Below are plot examples, which are automatically updated daily at 12 AM UTC+7 (Jakarta time).

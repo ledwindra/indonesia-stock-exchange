@@ -16,10 +16,10 @@ class Reference:
             status_code = response.status_code
             data = response.json()
             df = pd.DataFrame(data)
-            df.to_csv('./data/listed-company.csv', index=False)
+            df.to_csv('./data/reference/listed-company.csv', index=False)
     
     def company_profile(self):
-        ticker = pd.read_csv('./data/listed-company.csv')
+        ticker = pd.read_csv('./data/reference/listed-company.csv')
         ticker = ticker['KodeEmiten'].to_list()
         data = []
         for t in ticker:
@@ -44,12 +44,6 @@ def main():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '-k',
-        '--key',
-        type=str,
-        help='Which key reference to use. Choices are: Profiles, Sekretaris, Direktur, Komisaris, KomiteAudit, PemegangSaham, AnakPerusahaan, KAP, Dividen, BondsAndSukuk, IssuedBond',
-        metavar=''
-    )
+    parser.add_argument('-k','--key', type=str, choices=['Profiles', 'Sekretaris', 'Direktur', 'Komisaris', 'KomiteAudit', 'PemegangSaham', 'AnakPerusahaan', 'KAP', 'Dividen', 'BondsAndSukuk', 'IssuedBond'], help='Which key reference to use.', metavar='')
     args = parser.parse_args()
     main()
