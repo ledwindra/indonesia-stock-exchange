@@ -26,7 +26,6 @@ class TradingData:
         except ValueError:
             pass
 
-
     def read_data(self):
         data = self.date_range()
         with Pool(cpu_count()) as p:
@@ -125,7 +124,8 @@ class FundamentalData:
             pass
 
     def read_data(self):
-        data = [f'data/financial-statement/{x}' for x in os.listdir('data/financial-statement/') if self.year in x]
+        directory = 'data/financial-statement/'
+        data = [f'{directory}/{x}' for x in os.listdir(directory) if self.year in x and self.quarter in x]
         with Pool(cpu_count()) as p:
             data = p.map(self.load_json, data)
 
