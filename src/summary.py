@@ -47,7 +47,7 @@ def main():
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-d', '--day', type=date.fromisoformat)
+    parser.add_argument('-d', '--day', type=date.fromisoformat, default=date(2015, 1, 1))
     parser.add_argument('-s', '--summary', type=str, choices=['GetBrokerSummary', 'GetIndexSummary', 'GetStockSummary'], help='Which summary that will be scraped.', metavar='')
     parser.add_argument('-f', '--file_name', type=str, choices=['broker-summary', 'index-summary', 'stock-summary'], help='File name which corresponds to information that will be obtaind.', metavar='')
     args = parser.parse_args()
