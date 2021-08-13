@@ -1,7 +1,9 @@
 import argparse
+import itertools
 import os
 import pandas as pd
 import requests
+import string
 from datetime import date
 from functools import reduce
 from multiprocessing import Pool, cpu_count
@@ -20,18 +22,12 @@ class FinancialStatement:
         
     def download(self, ticker, year, audit, quarter):
         url = f'http://www.idx.co.id/Portals/0/StaticData/ListedCompanies/Corporate_Actions/New_Info_JSX/Jenis_Informasi/01_Laporan_Keuangan/02_Soft_Copy_Laporan_Keuangan//Laporan%20Keuangan%20Tahun%20{year}/{audit}/{ticker}/FinancialStatement-{year}-{quarter}-{ticker}.xlsx'
+        excel_file = f'{ticker}{self.year}{self.audit}{self.quarter}.xlsx'
         try:
-            res = requests.get(url, timeout=5)
-            status_code = res.status_code
-            if not os.path.exists('tmp'):
-                os.mkdir('tmp')
-            excel = open(f'./tmp/{ticker}{self.year}{self.audit}{self.quarter}.xlsx', 'wb')
-            excel.write(res.content)
-            return status_code
-        except requests.exceptions.ConnectionError:
-            return None
-        except requests.exceptions.ReadTimeout:
-            return None
+            os.system(f'wget {url} -O tmp/{excel_file}')
+            return pd.read_excel(f'tmp/{excel_file}')
+        except ValueError:
+            os.system(f'rm tmp/{excel_file}')
         
     def dataframe(self, ticker, year, audit, quarter, column, sheet):
         try:
@@ -77,12 +73,8 @@ def main(ticker):
             pass
     
 if __name__ == '__main__':
-    url = 'https://www.idx.co.id/umbraco/Surface/Helper/GetEmiten?emitenType=s'
-    status_code = None
-    while status_code != 200:
-        response = requests.get(url)
-        status_code = response.status_code
-        data = response.json()
-    listed_company = [x['KodeEmiten'] for x in data]
+    data = [x for x in string.ascii_uppercase]
+    data = list(itertools.permutations(data, 4))
+    data = [''.join(data[x]) for x in range(len(data))]
     with Pool(cpu_count()) as p:
-        p.map(main, listed_company)
+        p.map(main, data)
