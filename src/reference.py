@@ -1,10 +1,10 @@
 
 import argparse
+import os
 import pandas as pd
 import requests
 
 class Reference:
-
     def __init__(self):
         self.key = args.key
 
@@ -12,7 +12,7 @@ class Reference:
         url = 'https://www.idx.co.id/umbraco/Surface/Helper/GetEmiten?emitenType=s'
         status_code = None
         while status_code != 200:
-            response = requests.get(url)
+            response = requests.get(url, headers=headers)
             status_code = response.status_code
             data = response.json()
             df = pd.DataFrame(data)
@@ -26,7 +26,7 @@ class Reference:
             url = f'https://www.idx.co.id/umbraco/Surface/ListedCompany/GetCompanyProfilesDetail?emitenType=&kodeEmiten={t}&language=id-id'
             status_code = None
             while status_code != 200:
-                response = requests.get(url)
+                response = requests.get(url, headers=headers)
                 status_code = response.status_code
                 response = response.json()
                 merge = lambda left, right: pd.merge(left, right, how='left', left_index=True, right_index=True)
@@ -42,8 +42,11 @@ def main():
     listed_company = reference.listed_company()
     reference.company_profile()
 
-if __name__ == "__main__":
+if __name__ == "__main__":    
     parser = argparse.ArgumentParser()
     parser.add_argument('-k','--key', type=str, choices=['Profiles', 'Sekretaris', 'Direktur', 'Komisaris', 'KomiteAudit', 'PemegangSaham', 'AnakPerusahaan', 'KAP', 'Dividen', 'BondsAndSukuk', 'IssuedBond'], help='Which key reference to use.', metavar='')
     args = parser.parse_args()
+    user_agent = os.getenv("USER_AGENT")
+    cookie = os.getenv("COOKIE")
+    headers = {"User-Agent": user_agent, "Cookie": cookie}
     main()
