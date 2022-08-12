@@ -48,7 +48,7 @@ class FinancialStatement:
             df['ticker'] = ticker
             ticker = df.pop('ticker')
             df.insert(0, 'ticker', ticker)
-            df = df.loc[:,~df.columns.duplicated()]
+            df = df.loc[:,~df.columns.duplicated(keep='last')]
             return df
         except ValueError:
             pass
