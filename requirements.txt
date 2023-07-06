@@ -3,4 +3,4 @@ numpy==1.18.0
 openpyxl==3.0.6
 pandas==0.25.3
 requests==2.22.0
-scipy==1.4.1
+scipy==1.10.0
